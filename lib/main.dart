@@ -9,8 +9,8 @@ void main() {
     EasyLocalization(
       supportedLocales: ApplicationConstants.supportedLocale,
       path: ApplicationConstants.langAssetPath,
-      startLocale: ApplicationConstants.trLocale,
-      fallbackLocale: ApplicationConstants.trLocale,
+      startLocale: ApplicationConstants.enLocale,
+      fallbackLocale: ApplicationConstants.enLocale,
       child: MyApp(),
     ),
   );

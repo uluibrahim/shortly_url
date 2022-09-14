@@ -1,3 +1,5 @@
 abstract class LocaleKeys {
-  static const example = "example";
+  static const start = "start";
+  static const moreThanJustShorterLinks = "moreThanJustShorterLinks";
+  static const makeLinks = "makeLinks";
 }

@@ -1,12 +1,12 @@
 import 'dart:ui';
 
 class ApplicationConstants {
-  static const appName = 'Architecture Flutter';
+  static const appName = 'Shortly Url';
   static const langAssetPath = 'assets/translations';
   static const email = "";
-  static const trLocale = Locale("tr", "TR");
+  static const enLocale = Locale("en", "US");
 
   static const supportedLocale = [
-    ApplicationConstants.trLocale,
+    ApplicationConstants.enLocale,
   ];
 }
