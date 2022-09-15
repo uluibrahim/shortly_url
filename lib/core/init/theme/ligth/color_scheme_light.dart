@@ -12,4 +12,6 @@ class ColorSchemeLight {
       );
 
   final Color cyan = Colors.cyan;
+  final Color grey100 = Colors.grey.shade100;
+  final Color primaryDarkColor = const Color.fromARGB(255, 26, 29, 75);
 }

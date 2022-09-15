@@ -8,6 +8,7 @@ import 'package:shortly_url/core/init/language/locale_keys.dart';
 import 'package:shortly_url/product/enum/assets_enum.dart';
 
 import '../../../core/component/button/custom_elevated_button.dart';
+import '../../../product/auto_route/app_router.dart';
 
 class SplashView extends StatelessWidget {
   const SplashView({Key? key}) : super(key: key);
@@ -43,7 +44,7 @@ class SplashView extends StatelessWidget {
                 text: LocaleKeys.start.tr(),
                 context: context,
                 ontap: () {
-                  // context.router.navigate();
+                  context.router.replace(const OnBoardingRoute());
                 },
               ),
             ],

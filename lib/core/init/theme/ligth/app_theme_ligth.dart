@@ -11,5 +11,7 @@ class AppThemeLight extends AppTheme with IThemeLigth {
   @override
   ThemeData? get theme => ThemeData.light().copyWith(
         colorScheme: colorSchemeLight?.colorScheme,
+        scaffoldBackgroundColor: colorSchemeLight?.grey100,
+        primaryColorDark: colorSchemeLight?.primaryDarkColor,
       );
 }
