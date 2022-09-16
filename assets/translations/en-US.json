@@ -2,5 +2,10 @@
     "start": "Start",
     "moreThanJustShorterLinks": "More than just shorter links",
     "makeLinks": "We make it easy to shorten long links",
-    "skip": "Skip"
+    "skip": "Skip",
+    "yourLinkHistory": "Your link history",
+    "letsGetStarted": "Let's get satarted!",
+    "pasteYourFirstLink": "Paste your first link into the field to shorten it",
+    "shortenALinkHere": "Shorten a link here...",
+    "shortenIt": "SHORTEN IT!"
 }
