@@ -24,6 +24,10 @@ class _$AppRouter extends RootStackRouter {
     OnBoardingRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
           routeData: routeData, child: const OnBoardingView());
+    },
+    HomeRoute.name: (routeData) {
+      return MaterialPageX<dynamic>(
+          routeData: routeData, child: const HomeView());
     }
   };
 
@@ -32,7 +36,8 @@ class _$AppRouter extends RootStackRouter {
         RouteConfig('/#redirect',
             path: '/', redirectTo: 'splashView', fullMatch: true),
         RouteConfig(SplashRoute.name, path: 'splashView'),
-        RouteConfig(OnBoardingRoute.name, path: 'onboardView')
+        RouteConfig(OnBoardingRoute.name, path: 'onboardView'),
+        RouteConfig(HomeRoute.name, path: 'homeView')
       ];
 }
 
@@ -50,4 +55,12 @@ class OnBoardingRoute extends PageRouteInfo<void> {
   const OnBoardingRoute() : super(OnBoardingRoute.name, path: 'onboardView');
 
   static const String name = 'OnBoardingRoute';
+}
+
+/// generated route for
+/// [HomeView]
+class HomeRoute extends PageRouteInfo<void> {
+  const HomeRoute() : super(HomeRoute.name, path: 'homeView');
+
+  static const String name = 'HomeRoute';
 }

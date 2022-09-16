@@ -1,7 +1,9 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:shortly_url/core/extensions/context_extension.dart';
 import 'package:shortly_url/core/init/language/locale_keys.dart';
+import 'package:shortly_url/product/auto_route/app_router.dart';
 
 import '../../../core/constants/app/application_constants.dart';
 import '../../../product/component/onboard_card.dart';
@@ -58,6 +60,8 @@ class _OnBoardingViewState extends State<OnBoardingView>
           _pageController.animateToPage(_tabController.index + 1,
               duration: const Duration(milliseconds: 300),
               curve: Curves.linear);
+        } else {
+          context.router.replace(const HomeRoute());
         }
       },
       child: Text(LocaleKeys.skip.tr()),

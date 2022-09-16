@@ -13,5 +13,13 @@ class AppThemeLight extends AppTheme with IThemeLigth {
         colorScheme: colorSchemeLight?.colorScheme,
         scaffoldBackgroundColor: colorSchemeLight?.grey100,
         primaryColorDark: colorSchemeLight?.primaryDarkColor,
+        inputDecorationTheme: const InputDecorationTheme(
+          focusedBorder: OutlineInputBorder(borderSide: BorderSide.none),
+          errorBorder:
+              OutlineInputBorder(borderSide: BorderSide(color: Colors.red)),
+          focusedErrorBorder:
+              OutlineInputBorder(borderSide: BorderSide(color: Colors.red)),
+          enabledBorder: OutlineInputBorder(borderSide: BorderSide.none),
+        ),
       );
 }

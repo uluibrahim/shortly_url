@@ -1,5 +1,6 @@
 enum ServicePaths {
-  base("base_url");
+  shorten("/shorten"),
+  base("https://api.shrtco.de/v2");
 
   final String path;
   const ServicePaths(this.path);
