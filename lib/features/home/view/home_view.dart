@@ -6,6 +6,7 @@ import 'package:shortly_url/core/component/button/custom_elevated_button.dart';
 import 'package:shortly_url/core/extensions/context_extension.dart';
 import 'package:shortly_url/core/init/language/locale_keys.dart';
 import 'package:shortly_url/features/home/viewmodel/home_viewmodel.dart';
+import 'package:shortly_url/product/enum/view_state.dart';
 
 import '../../../core/constants/app/application_constants.dart';
 import '../../../product/enum/assets_enum.dart';
@@ -32,36 +33,113 @@ class _HomeViewState extends State<HomeView> with ValidationMixin {
     return ChangeNotifierProvider(
       create: (context) => HomeViewmodel(),
       builder: (context, child) {
-        final viewmodel = Provider.of<HomeViewmodel>(context, listen: false);
+        final viewmodel = Provider.of<HomeViewmodel>(context);
         return Scaffold(
-          appBar: AppBar(
-            title: viewmodel.shortedLinkList?.isNotEmpty ?? false
-                ? Text(
-                    LocaleKeys.yourLinkHistory.tr(),
-                    style: context.textTheme.titleLarge,
-                  )
-                : Text(
-                    ApplicationConstants.appName,
-                    style: context.textTheme.headline3
-                        ?.copyWith(fontWeight: FontWeight.bold),
-                  ),
-          ),
-          body: Column(
+          appBar: _appBar(viewmodel),
+          body: Stack(
             children: [
-              Expanded(
-                flex: 73,
-                child: _started,
+              Column(
+                children: [
+                  Expanded(
+                    flex: 73,
+                    child: viewmodel.shortedLinkList?.isNotEmpty ?? false
+                        ? _yourHistorLinks(viewmodel)
+                        : _started,
+                  ),
+                  Expanded(
+                    flex: 27,
+                    child: _formAndShortenButton(viewmodel),
+                  ),
+                ],
               ),
-              Expanded(
-                flex: 27,
-                child: _formAndShortenButton(viewmodel),
-              ),
+              viewmodel.state == ViewState.busy
+                  ? _loadingContainer
+                  : const SizedBox.shrink(),
             ],
           ),
         );
       },
     );
   }
+
+  AppBar _appBar(HomeViewmodel viewmodel) {
+    return AppBar(
+      title: viewmodel.shortedLinkList?.isNotEmpty ?? false
+          ? Text(
+              LocaleKeys.yourLinkHistory.tr(),
+              style: context.textTheme.titleLarge,
+            )
+          : Text(
+              ApplicationConstants.appName,
+              style: context.textTheme.headline3
+                  ?.copyWith(fontWeight: FontWeight.bold),
+            ),
+    );
+  }
+
+  Widget _yourHistorLinks(HomeViewmodel viewmodel) {
+    return Padding(
+      padding: context.pagePadding,
+      child: ListView.builder(
+        itemCount: viewmodel.shortedLinkList?.length,
+        itemBuilder: (context, index) {
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              padding: context.paddingNormal,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(viewmodel
+                              .shortedLinkList?[index].result?.originalLink ??
+                          ""),
+                      IconButton(
+                          onPressed: () {
+                            viewmodel.removeLink(index);
+                          },
+                          icon: const Icon(Icons.delete))
+                    ],
+                  ),
+                  const Divider(thickness: 1),
+                  Text(
+                      viewmodel.shortedLinkList?[index].result?.shortLink ?? "",
+                      textAlign: TextAlign.start),
+                  const SizedBox(height: 20),
+                  CustomElevatedButton(
+                    color: viewmodel.shortedLinkList?[index].result?.isCopied ??
+                            false
+                        ? Colors.indigo.shade900
+                        : null,
+                    ontap: () {
+                      viewmodel.coppyLink(index);
+                    },
+                    text: viewmodel.shortedLinkList?[index].result?.isCopied ??
+                            false
+                        ? "COPIED!"
+                        : "COPY",
+                    context: context,
+                  )
+                ],
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  get _loadingContainer => Container(
+        color: Colors.grey.withOpacity(0.4),
+        width: context.width,
+        height: context.height,
+        child: const Center(child: CircularProgressIndicator()),
+      );
 
   Column get _started {
     return Column(
@@ -147,7 +225,7 @@ class _HomeViewState extends State<HomeView> with ValidationMixin {
     if (_formKey.currentState?.validate() ?? false) {
       _formKey.currentState!.save();
       viewmodel.autovalidateMode = AutovalidateMode.disabled;
-      // await viewmodel.shortenLink(_textEditingController.text);
+      await viewmodel.shortenLink(_textEditingController.text);
     }
   }
 }

@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:shortly_url/core/init/network/network_manager.dart';
 import 'package:shortly_url/features/home/model/shorted_model.dart';
 import 'package:shortly_url/product/enum/service_paths.dart';
@@ -11,9 +12,10 @@ class HomeService extends IHomeService {
 
   @override
   Future shortenLink(String originalLink) async {
-    NetworkManager.instance?.dioGet(
+    FormData data = FormData.fromMap({"url": originalLink});
+    return await NetworkManager.instance?.dioPost(
       ServicePaths.shorten.path,
-      queryParameters: {"url": originalLink},
+      data: data,
       model: ShortedModel(),
     );
   }

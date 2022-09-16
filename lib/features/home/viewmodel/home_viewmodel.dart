@@ -21,19 +21,29 @@ class HomeViewmodel with ChangeNotifier implements HomeService {
     notifyListeners();
   }
 
-
   List<ShortedModel>? shortedLinkList;
 
   _addLink(ShortedModel value) {
     shortedLinkList ??= [];
     shortedLinkList!.add(value);
+    notifyListeners();
   }
 
   removeLink(int index) {
     shortedLinkList!.removeAt(index);
+    notifyListeners();
   }
 
-  coppyLink() {}
+  coppyLink(int index) {
+    shortedLinkList!.fold<bool>(false, (previousValue, element) {
+      element.result?.isCopied = false;
+      notifyListeners();
+      return element.result?.isCopied ?? false;
+    });
+
+    shortedLinkList?[index].result?.isCopied = true;
+    notifyListeners();
+  }
 
   @override
   Future shortenLink(String originalLink) async {
@@ -44,7 +54,7 @@ class HomeViewmodel with ChangeNotifier implements HomeService {
         _addLink(model);
       }
     } catch (e) {
-      debugPrint(e.toString());
+      return false;
     } finally {
       state = ViewState.idle;
     }
