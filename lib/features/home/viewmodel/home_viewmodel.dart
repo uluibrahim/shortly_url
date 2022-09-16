@@ -37,7 +37,6 @@ class HomeViewmodel with ChangeNotifier implements HomeService {
   coppyLink(int index) {
     shortedLinkList!.fold<bool>(false, (previousValue, element) {
       element.result?.isCopied = false;
-      notifyListeners();
       return element.result?.isCopied ?? false;
     });
 

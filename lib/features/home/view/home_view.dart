@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:shortly_url/core/component/button/custom_elevated_button.dart';
@@ -92,6 +93,7 @@ class _HomeViewState extends State<HomeView> with ValidationMixin {
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -108,8 +110,11 @@ class _HomeViewState extends State<HomeView> with ValidationMixin {
                   ),
                   const Divider(thickness: 1),
                   Text(
-                      viewmodel.shortedLinkList?[index].result?.shortLink ?? "",
-                      textAlign: TextAlign.start),
+                    viewmodel.shortedLinkList?[index].result?.fullShortLink ??
+                        "",
+                    style: context.textTheme.bodyMedium
+                        ?.copyWith(color: context.colors.primary),
+                  ),
                   const SizedBox(height: 20),
                   CustomElevatedButton(
                     color: viewmodel.shortedLinkList?[index].result?.isCopied ??
@@ -118,6 +123,9 @@ class _HomeViewState extends State<HomeView> with ValidationMixin {
                         : null,
                     ontap: () {
                       viewmodel.coppyLink(index);
+                      Clipboard.setData(ClipboardData(
+                          text: viewmodel
+                              .shortedLinkList?[index].result?.fullShortLink));
                     },
                     text: viewmodel.shortedLinkList?[index].result?.isCopied ??
                             false
