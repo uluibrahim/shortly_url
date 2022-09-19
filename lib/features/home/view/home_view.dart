@@ -9,6 +9,7 @@ import 'package:shortly_url/core/init/language/locale_keys.dart';
 import 'package:shortly_url/features/home/viewmodel/home_viewmodel.dart';
 import 'package:shortly_url/product/enum/view_state.dart';
 
+import '../../../core/component/snack_bar/custom_snackbar.dart';
 import '../../../core/constants/app/application_constants.dart';
 import '../../../product/enum/assets_enum.dart';
 import '../../../product/mixin/validation_mixin.dart';
@@ -23,10 +24,17 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> with ValidationMixin {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   late final TextEditingController _textEditingController;
+
   @override
   void initState() {
     super.initState();
     _textEditingController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _textEditingController.dispose();
+    super.dispose();
   }
 
   @override
@@ -116,29 +124,30 @@ class _HomeViewState extends State<HomeView> with ValidationMixin {
                         ?.copyWith(color: context.colors.primary),
                   ),
                   const SizedBox(height: 20),
-                  CustomElevatedButton(
-                    color: viewmodel.shortedLinkList?[index].result?.isCopied ??
-                            false
-                        ? Colors.indigo.shade900
-                        : null,
-                    ontap: () {
-                      viewmodel.coppyLink(index);
-                      Clipboard.setData(ClipboardData(
-                          text: viewmodel
-                              .shortedLinkList?[index].result?.fullShortLink));
-                    },
-                    text: viewmodel.shortedLinkList?[index].result?.isCopied ??
-                            false
-                        ? "COPIED!"
-                        : "COPY",
-                    context: context,
-                  )
+                  _copLinkOperation(viewmodel, index)
                 ],
               ),
             ),
           );
         },
       ),
+    );
+  }
+
+  CustomElevatedButton _copLinkOperation(HomeViewmodel viewmodel, int index) {
+    return CustomElevatedButton(
+      color: viewmodel.shortedLinkList?[index].result?.isCopied ?? false
+          ? Colors.indigo.shade900
+          : null,
+      ontap: () {
+        viewmodel.coppyLink(index);
+        Clipboard.setData(ClipboardData(
+            text: viewmodel.shortedLinkList?[index].result?.fullShortLink));
+      },
+      text: viewmodel.shortedLinkList?[index].result?.isCopied ?? false
+          ? LocaleKeys.copied
+          : LocaleKeys.copy,
+      context: context,
     );
   }
 
@@ -233,7 +242,12 @@ class _HomeViewState extends State<HomeView> with ValidationMixin {
     if (_formKey.currentState?.validate() ?? false) {
       _formKey.currentState!.save();
       viewmodel.autovalidateMode = AutovalidateMode.disabled;
-      await viewmodel.shortenLink(_textEditingController.text);
+      await viewmodel.shortenLink(_textEditingController.text).then((value) {
+        if (!value) {
+          ScaffoldMessenger.of(context)
+              .showSnackBar(CustomSnackBar(text: LocaleKeys.textIsNotLink));
+        }
+      });
     }
   }
 }

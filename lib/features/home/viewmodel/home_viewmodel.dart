@@ -52,6 +52,7 @@ class HomeViewmodel with ChangeNotifier implements HomeService {
       if (model != null) {
         _addLink(model);
       }
+      return true;
     } catch (e) {
       return false;
     } finally {
