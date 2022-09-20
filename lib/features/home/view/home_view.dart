@@ -48,16 +48,22 @@ class _HomeViewState extends State<HomeView> with ValidationMixin {
           body: Stack(
             children: [
               Column(
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Expanded(
+                  Flexible(
                     flex: 73,
-                    child: viewmodel.shortedLinkList?.isNotEmpty ?? false
-                        ? _yourHistorLinks(viewmodel)
-                        : _started,
+                    child: SingleChildScrollView(
+                      child: viewmodel.shortedLinkList?.isNotEmpty ?? false
+                          ? _yourHistorLinks(viewmodel)
+                          : _started,
+                    ),
                   ),
-                  Expanded(
+                  const SizedBox(height: 10),
+                  Flexible(
                     flex: 27,
-                    child: _formAndShortenButton(viewmodel),
+                    child: SingleChildScrollView(
+                      child: _formAndShortenButton(viewmodel),
+                    ),
                   ),
                 ],
               ),
@@ -186,6 +192,7 @@ class _HomeViewState extends State<HomeView> with ValidationMixin {
         children: [
           Container(
             width: context.width,
+            height: (context.height * 0.27),
             decoration: BoxDecoration(
               color: Colors.indigo.shade900,
             ),
@@ -204,8 +211,10 @@ class _HomeViewState extends State<HomeView> with ValidationMixin {
           ),
           SizedBox(
             width: context.width,
+            height: (context.height * 0.27),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Container(
                   width: context.width * 0.85,
