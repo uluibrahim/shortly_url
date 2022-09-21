@@ -95,47 +95,50 @@ class _HomeViewState extends State<HomeView> with ValidationMixin {
   Widget _yourHistorLinks(HomeViewmodel viewmodel) {
     return Padding(
       padding: context.pagePadding,
-      child: ListView.builder(
-        itemCount: viewmodel.shortedLinkList?.length,
-        itemBuilder: (context, index) {
-          return Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-              padding: context.paddingNormal,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
+      child: SizedBox(
+        height: context.height * 0.60,
+        child: ListView.builder(
+          itemCount: viewmodel.shortedLinkList?.length,
+          itemBuilder: (context, index) {
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                padding: context.paddingNormal,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(viewmodel
+                                .shortedLinkList?[index].result?.originalLink ??
+                            ""),
+                        IconButton(
+                            onPressed: () {
+                              viewmodel.removeLink(index);
+                            },
+                            icon: const Icon(Icons.delete))
+                      ],
+                    ),
+                    const Divider(thickness: 1),
+                    Text(
+                      viewmodel.shortedLinkList?[index].result?.fullShortLink ??
+                          "",
+                      style: context.textTheme.bodyMedium
+                          ?.copyWith(color: context.colors.primary),
+                    ),
+                    const SizedBox(height: 20),
+                    _copLinkOperation(viewmodel, index)
+                  ],
+                ),
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(viewmodel
-                              .shortedLinkList?[index].result?.originalLink ??
-                          ""),
-                      IconButton(
-                          onPressed: () {
-                            viewmodel.removeLink(index);
-                          },
-                          icon: const Icon(Icons.delete))
-                    ],
-                  ),
-                  const Divider(thickness: 1),
-                  Text(
-                    viewmodel.shortedLinkList?[index].result?.fullShortLink ??
-                        "",
-                    style: context.textTheme.bodyMedium
-                        ?.copyWith(color: context.colors.primary),
-                  ),
-                  const SizedBox(height: 20),
-                  _copLinkOperation(viewmodel, index)
-                ],
-              ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }
